@@ -14,7 +14,7 @@
   padding: 80px;
   gap: 64px;
   font-family: var(--font-geist-sans);
-  background-color: white
+  background-image: url("assets/silvester.jpeg")
 }
 
 @media (prefers-color-scheme: dark) {
@@ -113,6 +113,17 @@
 .header {
   grid-row-start: 1;
  align-items: right;
+}
+
+.h1 {
+  color: white;
+  font-size: 70px;
+}
+
+.rectangle {
+  background-color: black;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 /* Enable hover only on non-touch devices */

@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import event from "./new_event";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { useEffect, useState } from "react";
+import Confetti from 'react-confetti'
 
 
 export default function Home() {
@@ -22,10 +23,15 @@ export default function Home() {
         <p>{event()}</p>
       </header>
       <main className={styles.main}>
-        <h1>{calcDate()}</h1>
+        <div className={styles.rectangle}>
+            <h1 className={styles.h1}>{calcDate()}</h1>
+        </div>
       </main>
     </div>
-  );
+    );
+
+
+
 }
 
 function calcDate(){
@@ -38,12 +44,23 @@ function calcDate(){
   var difference_minutes = 0;
   var difference_seconds = 0;
   var difference = '';
+  var all = 0;
   
   difference_days = differenceInDays(date, today);
   difference_hours = differenceInHours(date, today) - difference_days * 24;
   difference_minutes = differenceInMinutes(date, today) - differenceInHours(date, today) * 60;
   difference_seconds = differenceInSeconds(date, today) - differenceInMinutes(date, today) * 60;
   difference = difference_days.toString() + ' Tag(e) ' + difference_hours.toString() + ':' + difference_minutes.toString() + ':' + difference_seconds.toString();
+  all = difference_days+difference_hours+difference_minutes+difference_seconds;
+  if (all <= 0){
+    return (
+      <Confetti
+        width={1920}
+        height={1280}
+        numberOfPieces={400}
+      />
+    );
+  }
   return difference
 
 

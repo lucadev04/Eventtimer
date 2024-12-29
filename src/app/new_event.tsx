@@ -57,7 +57,7 @@ const event = function Event() {
   
     return (
       <>
-        <Button variant="primary" onClick={() => setShow(true)}>New Event</Button>
+        <Button variant="dark" onClick={() => setShow(true)}>New Event</Button>
         {show && new_event()}
       </>
     );
