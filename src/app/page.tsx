@@ -1,7 +1,7 @@
 'use client'
 
 import styles from "./page.module.css";
-import event from "./new_event";
+import event from "./Components/new_event";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { useEffect, useState } from "react";
 import Confetti from 'react-confetti'
