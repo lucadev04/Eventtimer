@@ -1,27 +1,44 @@
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { SidebarData } from "./SidebarData";
+import { IconContext } from "react-icons";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
+function Sidebar() {
+  const [sidebar, setSidebar] = useState(false);
 
-export default function Navbar(){
-    return(
-        <Sidebar>
-            <Menu
-            menuItemStyles={{
-                button: {
-                // the active class will be added automatically by react router
-                // so we can use it to style the active menu item
-                [`&.active`]: {
-                backgroundColor: '#13395e',
-                color: '#b6c8d9',
-                },
-            },
-            }}
-        >
-            <MenuItem component={<Link to="#" />}> Documentation</MenuItem>
-            <MenuItem component={<Link to="#" />}> Calendar</MenuItem>
-            <MenuItem component={<Link to="#" />}> E-commerce</MenuItem>
-            </Menu>
-        </Sidebar>
-    )
+  const showSidebar = () => setSidebar(!sidebar);
 
+  return (
+    <>
+      <IconContext.Provider value={{ color: "undefined" }}>
+        <div className="navbar">
+          <Link to="#" className="menu-bars">
+            <FaIcons.FaBars onClick={showSidebar} />
+          </Link>
+        </div>
+        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+          <ul className="nav-menu-items" onClick={showSidebar}>
+            <li className="navbar-toggle">
+              <Link to="#" className="menu-bars">
+                <AiIcons.AiOutlineClose />
+              </Link>
+            </li>
+            {SidebarData.map((item, index) => {
+              return (
+                <Button variant="dark" onClick={() => setShow(true)}>{item.title}</Button>
+                {show && {item.path}}
+
+              );
+            })}
+          </ul>
+        </nav>
+      </IconContext.Provider>
+    </>
+  );
 }
+
+export default Sidebar;

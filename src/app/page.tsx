@@ -5,6 +5,16 @@ import event from "./Components/new_event";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { useEffect, useState } from "react";
 import Confetti from 'react-confetti'
+import Sidebar from "./Components/sidebar";
+import { createRoot } from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+  Outlet,
+  createRoutesFromElements,
+} from "react-router-dom";
 
 
 export default function Home() {
@@ -23,13 +33,13 @@ export default function Home() {
         <p>{event()}</p>
       </header>
       <main className={styles.main}>
+        <Sidebar />
         <div className={styles.rectangle}>
             <h1 className={styles.h1}>{calcDate()}</h1>
         </div>
       </main>
     </div>
     );
-
 
 
 }
