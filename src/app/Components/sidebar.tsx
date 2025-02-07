@@ -1,44 +1,50 @@
-import React, { useState } from "react";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { SidebarData } from "./SidebarData";
-import { IconContext } from "react-icons";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { useEffect } from "react";
+import { Tooltip } from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
 
-  const showSidebar = () => setSidebar(!sidebar);
+const Sidebar = () => {
+  // Initialisiert Bootstrap-Tooltips für alle Elemente mit dem Attribut 'data-bs-toggle="tooltip"'
+  useEffect(() => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
+      new Tooltip(tooltipTriggerEl);
+    });
+  }, []);
 
   return (
-    <>
-      <IconContext.Provider value={{ color: "undefined" }}>
-        <div className="navbar">
-          <Link to="#" className="menu-bars">
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
-        </div>
-        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items" onClick={showSidebar}>
-            <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <Button variant="dark" onClick={() => setShow(true)}>{item.title}</Button>
-                {show && {item.path}}
-
-              );
-            })}
-          </ul>
-        </nav>
-      </IconContext.Provider>
-    </>
+    <div className="d-flex flex-column flex-shrink-0 bg-dark p-3" style={{ width: "14rem", height: "100vh"}}>
+      {/* Logo-Icon mit Tooltip */}
+      <a href="/" className="d-flex align-items-center mb-3 link-light text-decoration-none">
+        <i className="bi bi-bootstrap" style={{ fontSize: "2rem", marginRight: "10px" }}></i>
+        <span className="fs-4">Eventtimer</span>
+      </a>
+      
+      {/* Navigationselemente als Liste */}
+      <ul className="nav nav-pills flex-column mb-auto">
+        {[
+          { href: "#", icon: "bi-house-door", label: "Home", active: true },
+          { href: "#", icon: "bi-plus", label: "New Event"},
+          { href: "#", icon: "bi-image", label: "Background" },
+          { href: "#", icon: "bi-music-note-beamed", label: "Music" },
+          { href: "#", icon: "bi-magic", label: "Effects" },
+        ].map((item, index) => (
+          <li className="nav-item" key={index}>
+            <a
+              href={item.href}
+              className={`nav-link d-flex align-items-center ${item.active ? "active" : "link-light"}`}
+              title={item.label}
+            >
+              <i className={`bi ${item.icon}`} style={{ fontSize: "1.5rem", marginRight: "30px" }}></i>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
 
 export default Sidebar;

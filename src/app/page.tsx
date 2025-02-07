@@ -1,20 +1,12 @@
 'use client'
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import styles from "./page.module.css";
 import event from "./Components/new_event";
+import Sidebar from "./Components/sidebar"
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { useEffect, useState } from "react";
 import Confetti from 'react-confetti'
-import Sidebar from "./Components/sidebar";
-import { createRoot } from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-  Outlet,
-  createRoutesFromElements,
-} from "react-router-dom";
 
 
 export default function Home() {
@@ -27,13 +19,11 @@ export default function Home() {
   }, []);
   return (
     <div className={styles.page}>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" integrity="sha256-2TnSHycBDAm2wpZmgdi0z81kykGPJAkiUY+Wf97RbvY=" crossOrigin="anonymous"></link>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha256-gOQJIa9+K/XdfAuBkg2ONAdw5EnQbokw/s2b8BqsRFg=" crossOrigin="anonymous"></script>
       <header className={styles.header}>
         <p>{event()}</p>
       </header>
-      <main className={styles.main}>
-        <Sidebar />
+      <div className="position-fixed h-100 start-0 top-0"><Sidebar/></div>
+      <main className={`${styles.main} ms-5`}>
         <div className={styles.rectangle}>
             <h1 className={styles.h1}>{calcDate()}</h1>
         </div>
