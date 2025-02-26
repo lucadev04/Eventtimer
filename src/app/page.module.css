@@ -35,6 +35,19 @@
   grid-row-start: 2;
 }
 
+.newevent{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #383838;
+}
+
 .main ol {
   font-family: var(--font-geist-mono);
   padding-left: 0;

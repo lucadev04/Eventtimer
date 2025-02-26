@@ -2,7 +2,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import styles from "./page.module.css";
-import event from "./Components/new_event";
+import event from "./new-event/page";
 import Sidebar from "./Components/sidebar"
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { useEffect, useState } from "react";
