@@ -19,9 +19,6 @@ export default function Home() {
   }, []);
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <p>{event()}</p>
-      </header>
       <div className="position-fixed h-100 start-0 top-0"><Sidebar/></div>
       <main className={`${styles.main} ms-5`}>
         <div className={styles.rectangle}>

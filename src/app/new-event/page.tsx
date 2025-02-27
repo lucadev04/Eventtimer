@@ -4,6 +4,8 @@ import { useState } from 'react';
 import styles from "../page.module.css";
 import Sidebar from "../Components/sidebar"
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
 
 
@@ -23,10 +25,25 @@ const event = function Event() {
       localStorage.setItem("eventName", Eventname);
     }
     return (
-      <div>
+      <div className={styles.page}>
         <div className="position-fixed h-100 start-0 top-0"><Sidebar/></div>
         <div className={styles.newevent}>
           <h1>New Event</h1>
+            <form>
+              <div className="mb-3">
+                <label className="form-label">Eventname</label>
+                <input type="text" className="form-control" id="eventName" onChange={e => setText(e.target.value)}></input>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Date</label>
+              <input type="date" className="form-control" id="eventDate" onChange={e => setDate1(e.target.value)}></input>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Time</label>
+              <input type="time" className="form-control" id="eventTime" onChange={e => setTime(e.target.value)}></input>
+            </div>
+            <button type="submit" className="btn btn-primary" onClick={handleEvent}>Submit</button>
+            </form>
         </div>
       </div>
     )
