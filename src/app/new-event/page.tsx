@@ -10,19 +10,18 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 
 const event = function Event() {
-    const [show, setShow] = useState(false);
     const [Eventname, setText] = useState('');
     const [Date1, setDate1] = useState('');
     const [Time, setTime] = useState('');
     var today = new Date();
     var date = new Date(Date1+'T'+Time+':00');
     var difference = '';
+    var data = [];
 
     function handleEvent() {
       difference = differenceInDays(date, today)+' Tage '+differenceInHours(date, today)+':'+differenceInMinutes(date, today)+':'+differenceInSeconds(date, today)
-      localStorage.setItem("eventDate", Date1);
-      localStorage.setItem("eventTime", Time);
-      localStorage.setItem("eventName", Eventname);
+      data = [Date1, Time]
+      localStorage.setItem(Eventname, JSON.stringify(data));
     }
     return (
       <div className={styles.page}>
@@ -42,7 +41,7 @@ const event = function Event() {
               <label className="form-label">Time</label>
               <input type="time" className="form-control" id="eventTime" onChange={e => setTime(e.target.value)}></input>
             </div>
-            <button type="submit" className="btn btn-primary" onClick={handleEvent}>Submit</button>
+            <button type="submit" className="btn btn-primary" onClick={handleEvent}>Add</button>
             </form>
         </div>
       </div>

@@ -1,4 +1,4 @@
-"use client"; // Falls du Next.js App Router nutzt
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Sidebar = () => {
-  const pathname = usePathname(); // Holt den aktuellen Pfad
+  const pathname = usePathname();
 
   useEffect(() => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -20,13 +20,11 @@ const Sidebar = () => {
 
   return (
     <div className="d-flex flex-column flex-shrink-0 bg-dark p-3" style={{ width: "14rem", height: "100vh" }}>
-      {/* Logo-Icon mit Tooltip */}
       <a href="/" className="d-flex align-items-center mb-3 link-light text-decoration-none">
         <i className="bi bi-bootstrap" style={{ fontSize: "2rem", marginRight: "10px" }}></i>
         <span className="fs-4">Eventtimer</span>
       </a>
-
-      {/* Navigationselemente als Liste */}
+      
       <ul className="nav nav-pills flex-column mb-auto">
         {[
           { href: "/", icon: "bi-house-door", label: "Home" },
