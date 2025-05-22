@@ -17,11 +17,14 @@ const event = function Event() {
     var date = new Date(Date1+'T'+Time+':00');
     var difference = '';
     var data = [];
+    var events = [""];
 
     function handleEvent() {
       difference = differenceInDays(date, today)+' Tage '+differenceInHours(date, today)+':'+differenceInMinutes(date, today)+':'+differenceInSeconds(date, today)
       data = [Date1, Time]
+      events.push(Eventname)
       localStorage.setItem(Eventname, JSON.stringify(data));
+      localStorage.setItem("Events", JSON.stringify(events));
     }
     return (
       <div className={styles.page}>
