@@ -1,7 +1,5 @@
 "use client";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 import Dropdown from "react-bootstrap/Dropdown";
 import styles from "./page.module.css";
 import Sidebar from "./Components/sidebar";
@@ -12,20 +10,31 @@ import {
   differenceInSeconds,
 } from "date-fns";
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
   const [allEvents, setAllEvents] = useState<string[]>([]);
   const [selevent, setSelevent] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const currentParam = searchParams.get("event");
 
   useEffect(() => {
     setAllEvents(Object.keys(localStorage));
+    //TODO: implemt selected event saving
+    //setSelevent();
     const interval = setInterval(() => setTime(Date.now()), 1000);
     return () => {
       clearInterval(interval);
     };
   }, []);
+
+  function eventSetter(event: string) {
+    setSelevent(event);
+    router.push(`/?event=${event}`);
+  }
 
   return (
     <div className={styles.page}>
@@ -42,7 +51,7 @@ export default function Home() {
             <Dropdown.Item disabled>No Events</Dropdown.Item>
           ) : (
             allEvents.map((event, index) => (
-              <Dropdown.Item key={index} onClick={() => setSelevent(event)}>
+              <Dropdown.Item key={index} onClick={() => eventSetter(event)}>
                 {event}
               </Dropdown.Item>
             ))
@@ -51,8 +60,8 @@ export default function Home() {
       </Dropdown>
       <main className={`${styles.main} ms-5`}>
         <div className={styles.rectangle}>
-          <h2 className={styles.eventname}>{selevent}</h2>
-          <h1 className={styles.h1}>{calcDate(selevent)}</h1>
+          <h2 className={styles.eventname}>{currentParam}</h2>
+          <h1 className={styles.h1}>{calcDate(currentParam)}</h1>
         </div>
       </main>
     </div>
@@ -65,9 +74,9 @@ function calcDate(event: string) {
     var Date1 = JSON.parse(Data)[0];
     var Time = JSON.parse(Data)[1];
   } catch (err) {
-    return "You haven't created any Events yet.";
+    return "No events created";
   }
-  var today = new Date();
+  const today = new Date();
   var date = new Date(Date1 + "T" + Time + ":00");
   var difference_days = 0;
   var difference_hours = 0;

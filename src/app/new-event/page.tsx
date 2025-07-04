@@ -11,6 +11,8 @@ import {
 } from "date-fns";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import Toast from "react-bootstrap/Toast";
+import Link from "next/link";
 
 const event = function Event() {
   const [Eventname, setText] = useState("");
@@ -32,6 +34,15 @@ const event = function Event() {
       differenceInSeconds(date, today);
     data = [Date1, Time];
     localStorage.setItem(Eventname, JSON.stringify(data));
+    return (
+      <Toast>
+        <Toast.Header>
+          <strong className="me-auto">Event</strong>
+          <small>11 mins ago</small>
+        </Toast.Header>
+        <Toast.Body>You have created the event ** {Eventname} **</Toast.Body>
+      </Toast>
+    );
   }
   return (
     <div className={styles.page}>
@@ -68,13 +79,15 @@ const event = function Event() {
               onChange={(e) => setTime(e.target.value)}
             ></input>
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleEvent}
-          >
-            Add
-          </button>
+          <Link href={"/"}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleEvent}
+            >
+              Add
+            </button>
+          </Link>
         </form>
       </div>
     </div>
