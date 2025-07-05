@@ -16,7 +16,6 @@ import Confetti from "react-confetti";
 export default function Home() {
   const [time, setTime] = useState(Date.now());
   const [allEvents, setAllEvents] = useState<string[]>([]);
-  const [selevent, setSelevent] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
   const currentParam = searchParams.get("event");
@@ -32,7 +31,6 @@ export default function Home() {
   }, []);
 
   function eventSetter(event: string) {
-    setSelevent(event);
     router.push(`/?event=${event}`);
   }
 
@@ -70,20 +68,20 @@ export default function Home() {
 
 function calcDate(event: string) {
   try {
-    var Data = localStorage.getItem(event);
+    const Data = localStorage.getItem(event);
     var Date1 = JSON.parse(Data)[0];
     var Time = JSON.parse(Data)[1];
   } catch (err) {
     return "No events created";
   }
   const today = new Date();
-  var date = new Date(Date1 + "T" + Time + ":00");
-  var difference_days = 0;
-  var difference_hours = 0;
-  var difference_minutes = 0;
-  var difference_seconds = 0;
-  var difference = "";
-  var all = 0;
+  const date = new Date(Date1 + "T" + Time + ":00");
+  let difference_days = 0;
+  let difference_hours = 0;
+  let difference_minutes = 0;
+  let difference_seconds = 0;
+  let difference = "";
+  let all = 0;
 
   difference_days = differenceInDays(date, today);
   difference_hours = differenceInHours(date, today) - difference_days * 24;
