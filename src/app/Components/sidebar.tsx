@@ -12,19 +12,30 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]',
+    );
     tooltipTriggerList.forEach((tooltipTriggerEl) => {
       new Tooltip(tooltipTriggerEl);
     });
   }, []);
 
   return (
-    <div className="d-flex flex-column flex-shrink-0 bg-dark p-3" style={{ width: "14rem", height: "100vh" }}>
-      <a href="/" className="d-flex align-items-center mb-3 link-light text-decoration-none">
-        <i className="bi bi-bootstrap" style={{ fontSize: "2rem", marginRight: "10px" }}></i>
+    <div
+      className="d-flex flex-column flex-shrink-0 bg-dark p-3"
+      style={{ width: "14rem", height: "100vh" }}
+    >
+      <Link
+        href="/"
+        className="d-flex align-items-center mb-3 link-light text-decoration-none"
+      >
+        <i
+          className="bi bi-bootstrap"
+          style={{ fontSize: "2rem", marginRight: "10px" }}
+        ></i>
         <span className="fs-4">Eventtimer</span>
-      </a>
-      
+      </Link>
+
       <ul className="nav nav-pills flex-column mb-auto">
         {[
           { href: "/", icon: "bi-house-door", label: "Home" },
@@ -39,7 +50,10 @@ const Sidebar = () => {
               className={`nav-link d-flex align-items-center ${pathname === item.href ? "active" : "link-light"}`}
               title={item.label}
             >
-              <i className={`bi ${item.icon}`} style={{ fontSize: "1.5rem", marginRight: "30px" }}></i>
+              <i
+                className={`bi ${item.icon}`}
+                style={{ fontSize: "1.5rem", marginRight: "30px" }}
+              ></i>
               <span>{item.label}</span>
             </Link>
           </li>
@@ -50,4 +64,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

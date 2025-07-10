@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import styles from "../page.module.css";
-import Sidebar from "../Components/sidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { useRouter } from "next/navigation";
@@ -26,9 +25,6 @@ const event = function Event() {
   }
   return (
     <div className={styles.page}>
-      <div className="position-fixed h-100 start-0 top-0">
-        <Sidebar />
-      </div>
       <div className={styles.newevent}>
         <h1>New Event</h1>
         <form>

@@ -2,7 +2,7 @@
 
 import Dropdown from "react-bootstrap/Dropdown";
 import styles from "./page.module.css";
-import Sidebar from "./Components/sidebar";
+import CustomizePanel from "./Components/CustomizePanel";
 import {
   differenceInDays,
   differenceInHours,
@@ -12,6 +12,12 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Confetti from "react-confetti";
+import "uikit/dist/css/uikit.min.css";
+import "uikit/dist/css/uikit-core.min.css";
+import "uikit/dist/js/uikit.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
@@ -36,9 +42,6 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <div className="position-fixed h-100 start-0 top-0">
-        <Sidebar />
-      </div>
       <Dropdown className={styles.dropdown}>
         <Dropdown.Toggle variant="dark" id="dropdown-basic">
           Select Event
@@ -61,7 +64,25 @@ export default function Home() {
           <h2 className={styles.eventname}>{currentParam}</h2>
           <h1 className={styles.h1}>{calcDate(currentParam)}</h1>
         </div>
+        <center>
+          <button
+            className="uk-button uk-button-primary"
+            style={{ width: "10em" }}
+            data-uk-toggle="target: #customize-panel; animation: uk-animation-slide-bottom-small"
+          >
+            Customize
+          </button>
+        </center>
       </main>
+      <div
+        id="customize-panel"
+        hidden
+        className="uk-position-bottom uk-overlay uk-overlay-default"
+      >
+        <div className="uk-animation-slide-bottom-small">
+          <CustomizePanel />
+        </div>
+      </div>
     </div>
   );
 }
