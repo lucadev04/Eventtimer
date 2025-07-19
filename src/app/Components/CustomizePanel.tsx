@@ -64,7 +64,7 @@ const CustomizePanel = () => {
               />
               <a
                 className="uk-button uk-button-primary"
-                href=""
+                href="/background"
                 style={{ width: "11em", marginLeft: "45%" }}
               >
                 search images

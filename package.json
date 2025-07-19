@@ -23,6 +23,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.1",
+    "sass": "^1.89.2",
     "uikit": "^3.23.11"
   },
   "devDependencies": {
