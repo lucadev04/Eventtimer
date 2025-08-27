@@ -18,6 +18,7 @@ import "uikit/dist/js/uikit.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
