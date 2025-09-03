@@ -1,6 +1,12 @@
 "use client";
 
 import Dropdown from "react-bootstrap/Dropdown";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import styles from "./page.module.css";
 import CustomizePanel from "./Components/CustomizePanel";
 import {
@@ -12,12 +18,6 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Confetti from "react-confetti";
-import "uikit/dist/css/uikit.min.css";
-import "uikit/dist/css/uikit-core.min.css";
-import "uikit/dist/js/uikit.min.js";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -43,47 +43,29 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <Dropdown className={styles.dropdown}>
-        <Dropdown.Toggle variant="dark" id="dropdown-basic">
-          Select Event
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className={styles.dropdown}>Select Event</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
           {allEvents.length === 0 ? (
-            <Dropdown.Item disabled>No Events</Dropdown.Item>
+            <DropdownMenuItem disabled>No Events</DropdownMenuItem>
           ) : (
             allEvents.map((event, index) => (
-              <Dropdown.Item key={index} onClick={() => eventSetter(event)}>
+              <DropdownMenuItem key={index} onClick={() => eventSetter(event)}>
                 {event}
-              </Dropdown.Item>
+              </DropdownMenuItem>
             ))
           )}
-        </Dropdown.Menu>
-      </Dropdown>
-      <main className={`${styles.main} ms-5`}>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <main className={styles.main}>
         <div className={styles.rectangle}>
           <h2 className={styles.eventname}>{currentParam}</h2>
           <h1 className={styles.h1}>{calcDate(currentParam)}</h1>
-        </div>
-        <center>
-          <button
-            className="uk-button uk-button-primary"
-            style={{ width: "10em" }}
-            data-uk-toggle="target: #customize-panel; animation: uk-animation-slide-bottom-small"
-          >
-            Customize
-          </button>
-        </center>
-      </main>
-      <div
-        id="customize-panel"
-        hidden
-        className="uk-position-bottom uk-overlay uk-overlay-default"
-      >
-        <div className="uk-animation-slide-bottom-small">
           <CustomizePanel />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

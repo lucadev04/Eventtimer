@@ -1,14 +1,20 @@
 "use client";
 
 import styles from "../page.module.css";
-import { useEffect, useRef } from "react";
-import UIkit from "uikit";
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTrigger,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const CustomizePanel = () => {
   const inputFile = useRef<HTMLInputElement | null>(null);
-  useEffect(() => {
-    UIkit.switcher(".uk-subnav");
-  }, []);
 
   const uploadImage = () => {
     if (inputFile.current) {
@@ -25,56 +31,31 @@ const CustomizePanel = () => {
   };
 
   return (
-    <div className="uk-container">
-      <div className={styles.panel}>
-        <center>
-          <ul className="uk-subnav uk-subnav-pill" uk-switcher>
-            <li>
-              <a href="#">Design</a>
-            </li>
-            <li>
-              <a href="#">Background</a>
-            </li>
-            <li>
-              <a href="#">Effects</a>
-            </li>
-          </ul>
-
-          <div className="uk-switcher uk-margin">
-            <div>Design</div>
-            <div className="uk-flex uk-flex-column">
-              <button
-                className="uk-button uk-button-primary"
-                style={{
-                  width: "11em",
-                  marginBottom: "10px",
-                  marginLeft: "45%",
-                }}
-                onClick={uploadImage}
-              >
-                upload image
-              </button>
-              <input
-                type="file"
-                id="file"
-                ref={inputFile}
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
-              <a
-                className="uk-button uk-button-primary"
-                href="/background"
-                style={{ width: "11em", marginLeft: "45%" }}
-              >
-                search images
-              </a>
-            </div>
-            <div>Effects</div>
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Customize</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Customize</DrawerTitle>
+        </DrawerHeader>
+        <div className="p-4 pb-0">
+          <div className="flex items-center justify-center space-x-2">
+            <Tabs defaultValue="design">
+              <TabsList>
+                <TabsTrigger value="design">Design</TabsTrigger>
+                <TabsTrigger value="background">Background</TabsTrigger>
+                <TabsTrigger value="effects">Effects</TabsTrigger>
+              </TabsList>
+              <TabsContent value="design">Some design stuff</TabsContent>
+              <TabsContent value="background">change background</TabsContent>
+              <TabsContent value="effects">add effects</TabsContent>
+            </Tabs>
           </div>
-        </center>
-      </div>
-    </div>
+        </div>
+        <DrawerFooter></DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 };
 

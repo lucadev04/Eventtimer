@@ -1,74 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import styles from "../page.module.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import styles from "../page.module.css";
 
-const event = function Event() {
-  const [Eventname, setText] = useState("");
-  const [Date1, setDate1] = useState("");
-  const [Time, setTime] = useState("");
+export default function Event() {
+  const [eventName, setEventName] = useState("");
+  const [date1, setDate1] = useState("");
+  const [time, setTime] = useState("");
   const router = useRouter();
-  const link = "/?event=" + Eventname;
+  const link = "/?event=" + eventName;
 
-  function handleEvent() {
-    if (!Eventname || !Date1 || !Time) {
+  function handleEvent(e: React.FormEvent) {
+    e.preventDefault();
+    if (!eventName || !date1 || !time) {
       alert("Please fill out all fields!");
       return;
     }
-    let data = [];
-    data = [Date1, Time];
-    localStorage.setItem(Eventname, JSON.stringify(data));
+    const data = [date1, time];
+    localStorage.setItem(eventName, JSON.stringify(data));
     router.push(link);
   }
+
   return (
     <div className={styles.page}>
       <div className={styles.newevent}>
-        <h1>New Event</h1>
-        <form>
-          <div className="mb-3">
-            <label className="form-label">Eventname</label>
-            <input
+        <h1 className="text-2xl font-bold mb-6">New Event</h1>
+        <form onSubmit={handleEvent} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="eventName">Eventname</Label>
+            <Input
               type="text"
-              className="form-control"
               id="eventName"
-              onChange={(e) => setText(e.target.value)}
+              value={eventName}
+              onChange={(e) => setEventName(e.target.value)}
               required
-            ></input>
+            />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Date</label>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="eventDate">Date</Label>
+            <Input
               type="date"
-              className="form-control"
               id="eventDate"
+              value={date1}
               onChange={(e) => setDate1(e.target.value)}
               required
-            ></input>
+            />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Time</label>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="eventTime">Time</Label>
+            <Input
               type="time"
-              className="form-control"
               id="eventTime"
+              value={time}
               onChange={(e) => setTime(e.target.value)}
               required
-            ></input>
+            />
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleEvent}
-          >
+          <Button type="submit" className="w-full">
             Add
-          </button>
+          </Button>
         </form>
       </div>
     </div>
   );
-};
-
-export default event;
+}
