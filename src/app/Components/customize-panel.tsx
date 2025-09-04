@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "../page.module.css";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +11,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ModeToggle from "./mode-toggle";
 
 const CustomizePanel = () => {
   const inputFile = useRef<HTMLInputElement | null>(null);
@@ -47,7 +47,9 @@ const CustomizePanel = () => {
                 <TabsTrigger value="background">Background</TabsTrigger>
                 <TabsTrigger value="effects">Effects</TabsTrigger>
               </TabsList>
-              <TabsContent value="design">Some design stuff</TabsContent>
+              <TabsContent value="design">
+                <ModeToggle />
+              </TabsContent>
               <TabsContent value="background">change background</TabsContent>
               <TabsContent value="effects">add effects</TabsContent>
             </Tabs>

@@ -1,14 +1,8 @@
 "use client";
 
-import Dropdown from "react-bootstrap/Dropdown";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import styles from "./page.module.css";
-import CustomizePanel from "./Components/CustomizePanel";
+import CustomizePanel from "./Components/customize-panel";
+import Topbar from "./Components/topbar";
 import {
   differenceInDays,
   differenceInHours,
@@ -16,15 +10,13 @@ import {
   differenceInSeconds,
 } from "date-fns";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Confetti from "react-confetti";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
   const [allEvents, setAllEvents] = useState<string[]>([]);
   const searchParams = useSearchParams();
-  const router = useRouter();
   const currentParam = searchParams.get("event");
 
   useEffect(() => {
@@ -37,29 +29,12 @@ export default function Home() {
     };
   }, []);
 
-  function eventSetter(event: string) {
-    router.push(`/?event=${event}`);
-  }
-
   return (
-    <div className={styles.page}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className={styles.dropdown}>Select Event</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          {allEvents.length === 0 ? (
-            <DropdownMenuItem disabled>No Events</DropdownMenuItem>
-          ) : (
-            allEvents.map((event, index) => (
-              <DropdownMenuItem key={index} onClick={() => eventSetter(event)}>
-                {event}
-              </DropdownMenuItem>
-            ))
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <main className={styles.main}>
+    <div className={styles.page} id="Mainpage">
+      <main className={`${styles.main} flex-1 p-6`}>
+        <div className={styles.topbar}>
+          <Topbar allEvents={allEvents} toggleFullscreen={toggleFullscreen} />
+        </div>
         <div className={styles.rectangle}>
           <h2 className={styles.eventname}>{currentParam}</h2>
           <h1 className={styles.h1}>{calcDate(currentParam)}</h1>
@@ -68,6 +43,14 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+function toggleFullscreen() {
+  const element = document.getElementById("Mainpage");
+  const isFullscreen = document.fullscreenElement;
+  if (!isFullscreen) {
+    element?.requestFullscreen();
+  }
 }
 
 function calcDate(event: string) {
