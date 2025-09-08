@@ -15,12 +15,12 @@ import Confetti from "react-confetti";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
-  const [allEvents, setAllEvents] = useState<string[]>([]);
+  const [allEvents, setAllEvents] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const currentParam = searchParams.get("event");
 
   useEffect(() => {
-    setAllEvents(Object.keys(localStorage));
+    setAllEvents(localStorage.getItem("events"));
     //TODO: implemt selected event saving
     //setSelevent();
     const interval = setInterval(() => setTime(Date.now()), 1000);
@@ -28,7 +28,9 @@ export default function Home() {
       clearInterval(interval);
     };
   }, []);
-
+  if (allEvents == null) {
+    return;
+  }
   return (
     <div className={styles.page} id="Mainpage">
       <main className={`${styles.main} flex-1 p-6`}>
@@ -53,11 +55,23 @@ function toggleFullscreen() {
   }
 }
 
+function loadEvents() {
+  const raw = localStorage.getItem("events");
+  return raw ? JSON.parse(raw) : [];
+}
+
+function getEventByName(name: string) {
+  const events = loadEvents();
+  return (
+    events.find((e) => e.name.toLowerCase() === name.toLowerCase()) || null
+  );
+}
+
 function calcDate(event: string) {
   try {
-    const Data = localStorage.getItem(event);
-    var Date1 = JSON.parse(Data)[0];
-    var Time = JSON.parse(Data)[1];
+    const Data = getEventByName(event);
+    var Date1 = Data.date;
+    var Time = Data.time;
   } catch (err) {
     return "No events created";
   }

@@ -9,11 +9,12 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 type EventSelectorProps = {
-  allEvents: string[];
+  allEvents: string | null;
 };
 
 const EventSelector = ({ allEvents }: EventSelectorProps) => {
   const router = useRouter();
+  const events = JSON.parse(allEvents);
   function eventSetter(event: string) {
     router.push(`/?event=${event}`);
   }
@@ -23,12 +24,15 @@ const EventSelector = ({ allEvents }: EventSelectorProps) => {
         <Button>Select Event</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        {allEvents.length === 0 ? (
+        {allEvents === null ? (
           <DropdownMenuItem disabled>No Events</DropdownMenuItem>
         ) : (
-          allEvents.map((event, index) => (
-            <DropdownMenuItem key={index} onClick={() => eventSetter(event)}>
-              {event}
+          events.map((event, index) => (
+            <DropdownMenuItem
+              key={index}
+              onClick={() => eventSetter(event.name)}
+            >
+              {event.name}
             </DropdownMenuItem>
           ))
         )}

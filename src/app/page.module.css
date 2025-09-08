@@ -14,7 +14,7 @@
     padding: 80px;
     gap: 64px;
     font-family: var(--font-geist-sans);
-    background-image: url("assets/silvester.jpeg");
+    background-image: url("assets/purple.jpg");
 }
 
 @media (prefers-color-scheme: dark) {

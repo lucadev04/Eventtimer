@@ -20,9 +20,23 @@ export default function Event() {
       alert("Please fill out all fields!");
       return;
     }
-    const data = [date1, time];
-    localStorage.setItem(eventName, JSON.stringify(data));
-    router.push(link);
+    const raw_events = localStorage.getItem("events");
+    const data = { name: eventName, date: date1, time: time };
+    if (!raw_events) {
+      localStorage.setItem("events", JSON.stringify([data]));
+      router.push(link);
+    } else {
+      const event_check = raw_events.includes(eventName);
+      if (!event_check) {
+        const events = raw_events ? JSON.parse(raw_events) : [];
+        events.push(data);
+        localStorage.setItem("events", JSON.stringify(events));
+        router.push(link);
+      } else {
+        alert("This event exists already!");
+        return;
+      }
+    }
   }
 
   return (
