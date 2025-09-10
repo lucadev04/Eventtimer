@@ -12,6 +12,8 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Confetti from "react-confetti";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 export default function Home() {
   const [time, setTime] = useState(Date.now());
@@ -33,6 +35,7 @@ export default function Home() {
   }
   return (
     <div className={styles.page} id="Mainpage">
+      <Toaster />
       <main className={`${styles.main} flex-1 p-6`}>
         <div className={styles.topbar}>
           <Topbar allEvents={allEvents} toggleFullscreen={toggleFullscreen} />
@@ -47,11 +50,21 @@ export default function Home() {
   );
 }
 
-function toggleFullscreen() {
+function sleep(milliseconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function toggleFullscreen() {
   const element = document.getElementById("Mainpage");
   const isFullscreen = document.fullscreenElement;
   if (!isFullscreen) {
     element?.requestFullscreen();
+    await sleep(1000);
+    return toast(
+      "Fullscreenmode has been enabled. To close press (Esc) or the Fullscreen Button",
+    );
+  } else {
+    document.exitFullscreen();
   }
 }
 
