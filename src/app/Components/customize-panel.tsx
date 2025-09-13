@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -12,9 +13,12 @@ import {
 } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ModeToggle from "./mode-toggle";
+import { useEvents } from "../states/localStorage";
 
 const CustomizePanel = () => {
   const inputFile = useRef<HTMLInputElement | null>(null);
+  const searchParams = useSearchParams();
+  const updateEvent = useEvents((state) => state.updateEvent);
 
   const uploadImage = () => {
     if (inputFile.current) {
@@ -24,9 +28,12 @@ const CustomizePanel = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    const eventName = searchParams.get("event");
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      console.log(imageUrl);
+      updateEvent(eventName, {
+        background: imageUrl,
+      });
     }
   };
 
@@ -50,7 +57,19 @@ const CustomizePanel = () => {
               <TabsContent value="design">
                 <ModeToggle />
               </TabsContent>
-              <TabsContent value="background">change background</TabsContent>
+              <TabsContent value="background">
+                <div className="flex flex-col space-y-2">
+                  <input
+                    type="file"
+                    ref={inputFile}
+                    className="hidden"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                  <Button onClick={uploadImage}>Upload image</Button>
+                  <Button>Search images</Button>
+                </div>
+              </TabsContent>
               <TabsContent value="effects">add effects</TabsContent>
             </Tabs>
           </div>

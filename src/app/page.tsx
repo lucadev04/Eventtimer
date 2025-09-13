@@ -30,9 +30,7 @@ export default function Home() {
       clearInterval(interval);
     };
   }, []);
-  if (allEvents == null) {
-    return;
-  }
+
   return (
     <div className={styles.page} id="Mainpage">
       <Toaster />
@@ -59,7 +57,7 @@ async function toggleFullscreen() {
   const isFullscreen = document.fullscreenElement;
   if (!isFullscreen) {
     element?.requestFullscreen();
-    await sleep(1000);
+    await sleep(500);
     return toast(
       "Fullscreenmode has been enabled. To close press (Esc) or the Fullscreen Button",
     );
