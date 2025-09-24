@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 type EventSelectorProps = {
-  allEvents: string | null;
+  allEvents: string;
 };
 
 const EventSelector = ({ allEvents }: EventSelectorProps) => {

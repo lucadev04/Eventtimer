@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import EventSelector from "./event-selector";
 
 type TopbarProps = {
-  allEvents: string | null;
+  allEvents: string;
   toggleFullscreen: () => void;
 };
 

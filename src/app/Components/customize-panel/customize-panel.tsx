@@ -12,8 +12,8 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ModeToggle from "./mode-toggle";
-import { useEvents } from "../states/localStorage";
+import ModeToggle from "../mode-toggle";
+import { useEvents } from "../../states/localStorage";
 
 const CustomizePanel = () => {
   const inputFile = useRef<HTMLInputElement | null>(null);
