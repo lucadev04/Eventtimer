@@ -7,14 +7,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useEvents } from "../states/localStorage";
 
-type EventSelectorProps = {
-  allEvents: string;
-};
-
-const EventSelector = ({ allEvents }: EventSelectorProps) => {
+const EventSelector = () => {
   const router = useRouter();
-  const events = JSON.parse(allEvents);
+  const events = useEvents((s) => s.events);
+
   function eventSetter(event: string) {
     router.push(`/?event=${event}`);
   }
@@ -24,7 +22,7 @@ const EventSelector = ({ allEvents }: EventSelectorProps) => {
         <Button>Select Event</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        {allEvents === null ? (
+        {events === null ? (
           <DropdownMenuItem disabled>No Events</DropdownMenuItem>
         ) : (
           events.map((event, index) => (

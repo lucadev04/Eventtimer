@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import EventSelector from "./event-selector";
 
 type TopbarProps = {
-  allEvents: string;
   toggleFullscreen: () => void;
 };
 
-const Topbar = ({ allEvents, toggleFullscreen }: TopbarProps) => {
+const Topbar = ({ toggleFullscreen }: TopbarProps) => {
   const router = useRouter();
 
   function changeRoute() {
@@ -24,7 +23,7 @@ const Topbar = ({ allEvents, toggleFullscreen }: TopbarProps) => {
       <Button size="icon" onClick={changeRoute}>
         <Plus />
       </Button>
-      <EventSelector allEvents={allEvents} />
+      <EventSelector />
       <Button>Login</Button>
     </div>
   );

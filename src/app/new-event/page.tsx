@@ -6,13 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import styles from "../page.module.css";
+import { useEvents } from "../states/localStorage"; // 👉 Pfad anpassen!
 
 export default function Event() {
   const [eventName, setEventName] = useState("");
   const [date1, setDate1] = useState("");
   const [time, setTime] = useState("");
   const router = useRouter();
-  const link = "/?event=" + eventName;
+
+  const addEvent = useEvents((s) => s.addEvent);
+  const events = useEvents((s) => s.events);
 
   function handleEvent(e: React.FormEvent) {
     e.preventDefault();
@@ -20,23 +23,23 @@ export default function Event() {
       alert("Please fill out all fields!");
       return;
     }
-    const raw_events = localStorage.getItem("events");
-    const data = { name: eventName, date: date1, time: time };
-    if (!raw_events) {
-      localStorage.setItem("events", JSON.stringify([data]));
-      router.push(link);
-    } else {
-      const event_check = raw_events.includes(eventName);
-      if (!event_check) {
-        const events = raw_events ? JSON.parse(raw_events) : [];
-        events.push(data);
-        localStorage.setItem("events", JSON.stringify(events));
-        router.push(link);
-      } else {
-        alert("This event exists already!");
-        return;
-      }
+
+    const exists = events.some(
+      (e) => e.name.toLowerCase() === eventName.toLowerCase(),
+    );
+
+    if (exists) {
+      alert("This event already exists!");
+      return;
     }
+
+    addEvent({
+      name: eventName,
+      date: date1,
+      time: time,
+    });
+
+    router.push(`/?event=${eventName}`);
   }
 
   return (

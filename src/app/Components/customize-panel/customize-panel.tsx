@@ -29,12 +29,20 @@ const CustomizePanel = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const eventName = searchParams.get("event");
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
+
+    if (!file || !eventName) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      console.log(base64);
+
       updateEvent(eventName, {
-        background: imageUrl,
+        background: base64,
       });
-    }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   return (

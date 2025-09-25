@@ -24,15 +24,16 @@ export default function Home() {
   const currentParam = searchParams.get("event");
 
   useEffect(() => {
-    setAllEvents(localStorage.getItem("events"));
+    setAllEvents(useEvents.getState().events.toLocaleString());
+    if (allEvents == null) {
+      setAllEvents("[{}]");
+    }
     changeBackground(currentParam);
-    //TODO: implemt selected event saving
-    //setSelevent();
     const interval = setInterval(() => setTime(Date.now()), 1000);
     return () => {
       clearInterval(interval);
     };
-  }, [currentParam, changeBackground]);
+  }, [currentParam, changeBackground, allEvents]);
 
   function sleep(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -110,12 +111,17 @@ export default function Home() {
     <div
       className={styles.page}
       id="Mainpage"
-      style={{ backgroundImage: `url(${background})` }}
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <Toaster />
       <main className={`${styles.main} flex-1 p-6`}>
         <div className={styles.topbar}>
-          <Topbar allEvents={allEvents} toggleFullscreen={toggleFullscreen} />
+          <Topbar toggleFullscreen={toggleFullscreen} />
         </div>
         <div className={styles.rectangle}>
           <h2 className={styles.eventname}>{currentParam}</h2>
