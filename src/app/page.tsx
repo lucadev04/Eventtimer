@@ -18,6 +18,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useEvents } from "./states/localStorage";
 
+
 type Event = {
   name: string;
   date: string;
@@ -29,9 +30,10 @@ export default function Home() {
   const searchParams = useSearchParams();
   const currentParam = searchParams.get("event");
 
+  const events = useEvents(state => state.events);
+
   const [now, setNow] = useState(Date.now());
 
-  const [background, setBackground] = useState<string>();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,19 +46,18 @@ export default function Home() {
 
   const event: Event | undefined = useMemo(() => {
     if (!currentParam) return undefined;
-    return useEvents
-        .getState()
-        .events
-        .find(e => e.name.toLowerCase() === currentParam.toLowerCase());
-  }, [currentParam]);
 
-  useEffect(() => {
-    if (!event?.background) return;
-    setBackground(event.background);
-  }, [event]);
+    return events.find(
+        e => e.name.toLowerCase() === currentParam.toLowerCase()
+    );
+  }, [events, currentParam]);
+
+  const background = event?.background;
+
 
   async function toggleFullscreen() {
     const element = document.getElementById("Mainpage");
+
     if (!document.fullscreenElement) {
       await element?.requestFullscreen();
       toast(
@@ -66,6 +67,7 @@ export default function Home() {
       await document.exitFullscreen();
     }
   }
+
 
   function renderCountdown() {
     if (!event) return "Event not found";
@@ -86,11 +88,18 @@ export default function Home() {
     const total = days + hours + minutes + seconds;
 
     if (total <= 0) {
-      return <Confetti width={1920} height={1280} numberOfPieces={400} />;
+      return (
+          <Confetti
+              width={1920}
+              height={1280}
+              numberOfPieces={400}
+          />
+      );
     }
 
     return `${days} day(s) ${hours}:${minutes}:${seconds}`;
   }
+
 
   return (
       <div
