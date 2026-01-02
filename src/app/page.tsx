@@ -3,132 +3,125 @@
 import styles from "./page.module.css";
 import CustomizePanel from "./Components/customize-panel/customize-panel";
 import Topbar from "./Components/topbar";
+
 import {
   differenceInDays,
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
 } from "date-fns";
-import { useEffect, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Confetti from "react-confetti";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useEvents } from "./states/localStorage";
 
+type Event = {
+  name: string;
+  date: string;
+  time: string;
+  background?: string;
+};
+
 export default function Home() {
-  const [time, setTime] = useState(Date.now());
-  const [allEvents, setAllEvents] = useState<string | null>(null);
-  const [background, setBackground] = useState<string | undefined>(undefined);
   const searchParams = useSearchParams();
   const currentParam = searchParams.get("event");
 
-  useEffect(() => {
-    setAllEvents(useEvents.getState().events.toLocaleString());
-    if (allEvents == null) {
-      setAllEvents("[{}]");
-    }
-    changeBackground(currentParam);
-    const interval = setInterval(() => setTime(Date.now()), 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [currentParam, changeBackground, allEvents]);
+  const [now, setNow] = useState(Date.now());
 
-  function sleep(milliseconds: number) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
+  const [background, setBackground] = useState<string>();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const event: Event | undefined = useMemo(() => {
+    if (!currentParam) return undefined;
+    return useEvents
+        .getState()
+        .events
+        .find(e => e.name.toLowerCase() === currentParam.toLowerCase());
+  }, [currentParam]);
+
+  useEffect(() => {
+    if (!event?.background) return;
+    setBackground(event.background);
+  }, [event]);
 
   async function toggleFullscreen() {
     const element = document.getElementById("Mainpage");
-    const isFullscreen = document.fullscreenElement;
-    if (!isFullscreen) {
-      element?.requestFullscreen();
-      await sleep(500);
-      return toast(
-        "Fullscreenmode has been enabled. To close press (Esc) or the Fullscreen Button",
+    if (!document.fullscreenElement) {
+      await element?.requestFullscreen();
+      toast(
+          "Fullscreen mode enabled. Press Esc or the fullscreen button to exit."
       );
     } else {
-      document.exitFullscreen();
+      await document.exitFullscreen();
     }
   }
 
-  function getEventByName(name: string | null) {
-    const events = useEvents.getState().events;
-    return (
-      events.find((e) => e.name.toLowerCase() === name.toLowerCase()) || null
-    );
-  }
+  function renderCountdown() {
+    if (!event) return "Event not found";
 
-  function changeBackground(event: string | null) {
-    const Event = getEventByName(event);
-    setBackground(Event?.background);
-  }
+    const target = new Date(`${event.date}T${event.time}:00`);
+    const current = new Date(now);
 
-  function calcDate(event: string | null) {
-    try {
-      const Data = getEventByName(event);
-      var Date1 = Data.date;
-      var Time = Data.time;
-    } catch (err) {
-      return "No events created";
-    }
-    const today = new Date();
-    const date = new Date(Date1 + "T" + Time + ":00");
-    let difference_days = 0;
-    let difference_hours = 0;
-    let difference_minutes = 0;
-    let difference_seconds = 0;
-    let difference = "";
-    let all = 0;
+    const days = differenceInDays(target, current);
+    const hours =
+        differenceInHours(target, current) - days * 24;
+    const minutes =
+        differenceInMinutes(target, current) -
+        differenceInHours(target, current) * 60;
+    const seconds =
+        differenceInSeconds(target, current) -
+        differenceInMinutes(target, current) * 60;
 
-    difference_days = differenceInDays(date, today);
-    difference_hours = differenceInHours(date, today) - difference_days * 24;
-    difference_minutes =
-      differenceInMinutes(date, today) - differenceInHours(date, today) * 60;
-    difference_seconds =
-      differenceInSeconds(date, today) - differenceInMinutes(date, today) * 60;
-    difference =
-      difference_days.toString() +
-      " day(s) " +
-      difference_hours.toString() +
-      ":" +
-      difference_minutes.toString() +
-      ":" +
-      difference_seconds.toString();
-    all =
-      difference_days +
-      difference_hours +
-      difference_minutes +
-      difference_seconds;
-    if (all <= 0) {
+    const total = days + hours + minutes + seconds;
+
+    if (total <= 0) {
       return <Confetti width={1920} height={1280} numberOfPieces={400} />;
     }
-    return difference;
+
+    return `${days} day(s) ${hours}:${minutes}:${seconds}`;
   }
 
   return (
-    <div
-      className={styles.page}
-      id="Mainpage"
-      style={{
-        backgroundImage: `url(${background})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <Toaster />
-      <main className={`${styles.main} flex-1 p-6`}>
-        <div className={styles.topbar}>
-          <Topbar toggleFullscreen={toggleFullscreen} />
-        </div>
-        <div className={styles.rectangle}>
-          <h2 className={styles.eventname}>{currentParam}</h2>
-          <h1 className={styles.h1}>{calcDate(currentParam)}</h1>
-          <CustomizePanel />
-        </div>
-      </main>
-    </div>
+      <div
+          id="Mainpage"
+          className={styles.page}
+          style={{
+            backgroundImage: background ? `url(${background})` : undefined,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+      >
+        <Toaster />
+
+        <main className={`${styles.main} flex-1 p-6`}>
+          <div className={styles.topbar}>
+            <Topbar toggleFullscreen={toggleFullscreen} />
+          </div>
+
+          <div className={styles.rectangle}>
+            <h2 className={styles.eventname}>
+              {currentParam ?? "No event selected"}
+            </h2>
+
+            <h1 className={styles.h1}>
+              {renderCountdown()}
+            </h1>
+
+            <CustomizePanel />
+          </div>
+        </main>
+      </div>
   );
 }
