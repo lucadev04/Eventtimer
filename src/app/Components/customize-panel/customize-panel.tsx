@@ -8,14 +8,18 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerTrigger,
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ModeToggle from "../mode-toggle";
 import { useEvents } from "../../states/localStorage";
 
-const CustomizePanel = () => {
+interface Props {
+  open: boolean;
+  onOpenChangeAction: (open: boolean) => void;
+}
+
+const CustomizePanel = ({open, onOpenChangeAction}: Props) => {
   const inputFile = useRef<HTMLInputElement | null>(null);
   const searchParams = useSearchParams();
   const updateEvent = useEvents((state) => state.updateEvent);
@@ -46,10 +50,7 @@ const CustomizePanel = () => {
   };
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
-        <Button>Customize</Button>
-      </DrawerTrigger>
+    <Drawer open={open} onOpenChange={onOpenChangeAction}>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Customize</DrawerTitle>

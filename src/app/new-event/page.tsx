@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import styles from "../page.module.css";
-import { useEvents } from "../states/localStorage"; // 👉 Pfad anpassen!
+import { useEvents } from "../states/localStorage";
 
 export default function Event() {
   const [eventName, setEventName] = useState("");

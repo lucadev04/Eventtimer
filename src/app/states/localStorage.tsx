@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface Event {
+    id: string
   name: string;
   date: string;
   time: string;
@@ -11,7 +12,7 @@ interface EventsState {
   events: Event[];
   addEvent: (event: Event) => void;
   removeEvent: (name: string) => void;
-  updateEvent: (name: string | null, data: Partial<Event>) => void;
+  updateEvent: (id: string, data: Partial<Event>) => void;
   loadEvents: () => void;
 }
 
@@ -25,10 +26,10 @@ export const useEvents = create<EventsState>((set) => {
 
     addEvent: (event) =>
       set((state) => {
-        const newEvents = [...state.events, event];
-        localStorage.setItem("events", JSON.stringify(newEvents));
-        return { events: newEvents };
-      }),
+          const newEvents = [...state.events, { ...event, id: crypto.randomUUID() }]
+          localStorage.setItem("events", JSON.stringify(newEvents))
+          return { events: newEvents }
+    }),
 
     removeEvent: (name) =>
       set((state) => {
@@ -37,14 +38,15 @@ export const useEvents = create<EventsState>((set) => {
         return { events: newEvents };
       }),
 
-    updateEvent: (name, data) =>
-      set((state) => {
-        const newEvents = state.events.map((e) =>
-          e.name === name ? { ...e, ...data } : e,
-        );
-        localStorage.setItem("events", JSON.stringify(newEvents));
-        return { events: newEvents };
+      updateEvent: (id: string, data: Partial<Event>) =>
+        set((state) => {
+          const newEvents = state.events.map((e) =>
+            e.id === id ? { ...e, ...data } : e
+          )
+          localStorage.setItem("events", JSON.stringify(newEvents))
+          return { events: newEvents }
       }),
+
 
     loadEvents: () =>
       set(() => {

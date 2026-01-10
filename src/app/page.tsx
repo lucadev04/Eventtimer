@@ -17,9 +17,13 @@ import Confetti from "react-confetti";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useEvents } from "./states/localStorage";
+import {Button} from "@/components/ui/button"
+import {Edit2, Palette} from "lucide-react";
+import EventEditSheet from "@/app/Components/event-edit-sheet";
 
 
-type Event = {
+ export type Event = {
+   id: string;
   name: string;
   date: string;
   time: string;
@@ -33,6 +37,9 @@ export default function Home() {
   const events = useEvents(state => state.events);
 
   const [now, setNow] = useState(Date.now());
+
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
 
   useEffect(() => {
@@ -100,6 +107,10 @@ export default function Home() {
     return `${days} day(s) ${hours}:${minutes}:${seconds}`;
   }
 
+  if (event == undefined) {
+    return "Problem with getting  event"
+  }
+
 
   return (
       <div
@@ -127,8 +138,11 @@ export default function Home() {
             <h1 className={styles.h1}>
               {renderCountdown()}
             </h1>
+            <Button onClick={() => setOpen(true)}><Palette/></Button>
+            <Button className="ml-2" onClick={() => setEditOpen(true)}><Edit2/></Button>
 
-            <CustomizePanel />
+            <CustomizePanel open={open} onOpenChangeAction={setOpen}/>
+            <EventEditSheet open={editOpen} onOpenChangeAction={setEditOpen} event={event}/>
           </div>
         </main>
       </div>
