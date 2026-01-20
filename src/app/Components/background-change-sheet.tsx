@@ -6,17 +6,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Event } from "../page";
 
@@ -28,7 +17,7 @@ interface Props {
 
 export default function BackgroundChangeSheet({open, onOpenChangeAction, event}: Props) {
     return(
-        <Sheet open={open} onOpenChange={onOpenChangeAction}>
+    <Sheet open={open} onOpenChange={onOpenChangeAction}>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Change Background</SheetTitle>
