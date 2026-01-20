@@ -14,14 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 import { useEvents } from "../states/localStorage";
+import { Event } from "../page";
 
-export interface Event {
-  id: string;
-  name: string;
-  date: string;
-  time: string;
-  background?: string;
-}
 
 interface Props {
   open: boolean;

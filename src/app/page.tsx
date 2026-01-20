@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "./page.module.css";
-import CustomizePanel from "./Components/customize-panel/customize-panel";
 import Topbar from "./Components/topbar";
 
 import {
@@ -18,8 +17,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useEvents } from "./states/localStorage";
 import { Button } from "@/components/ui/button";
-import { Edit2, Palette, Trash2 } from "lucide-react";
+import { Edit2, Image, Palette, Trash2 } from "lucide-react";
 import EventEditSheet from "@/app/Components/event-edit-sheet";
+import BackgroundChangeSheet from "./Components/background-change-sheet";
 
 export type Event = {
   id: string;
@@ -39,6 +39,7 @@ export default function Home() {
 
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [backgroundOpen, setBackgroundOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -123,8 +124,8 @@ export default function Home() {
           </h2>
 
           <h1 className={styles.h1}>{renderCountdown()}</h1>
-          <Button onClick={() => setOpen(true)}>
-            <Palette />
+          <Button onClick={() => setBackgroundOpen(true)}>
+            <Image />
           </Button>
           <Button className="ml-2" onClick={() => setEditOpen(true)}>
             <Edit2 />
@@ -133,10 +134,22 @@ export default function Home() {
             <Trash2 />
           </Button>
 
-          <CustomizePanel open={open} onOpenChangeAction={setOpen} />
           <EventEditSheet
             open={editOpen}
             onOpenChangeAction={setEditOpen}
+            event={
+              event ?? {
+                id: "",
+                name: "",
+                date: "",
+                time: "",
+                background: undefined,
+              }
+            }
+          />
+          <BackgroundChangeSheet
+            open={backgroundOpen}
+            onOpenChangeAction={setBackgroundOpen}
             event={
               event ?? {
                 id: "",
