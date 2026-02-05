@@ -19,7 +19,7 @@ import { useEvents } from "./states/localStorage";
 import { Button } from "@/components/ui/button";
 import { Edit2, Image, Palette, Trash2 } from "lucide-react";
 import EventEditSheet from "@/app/Components/event-edit-sheet";
-import BackgroundChangeSheet from "./Components/background-change-sheet";
+import BackgroundChangeSheet from "./Components/background-change-sheet/background-change-sheet";
 
 export type Event = {
   id: string;
